@@ -1,0 +1,12 @@
+{
+  "title": "Carbon- and network-aware AI workload scheduling over an optical network fabric: simulation and reproducibility package",
+  "upload_type": "software",
+  "description": "Discrete-event cluster simulator (dcsim 0.1.0-0.3.0), ASTRA-sim/ns-3 collective-communication profiles, carbon-intensity series (including a Ghana series anchored to the Energy Commission's 2026 Energy Statistics), stored raw results, analysis and figure scripts, and regeneration scripts for the MSc thesis of Yahaya Ibrahim, Department of Telecommunication Engineering, KNUST. Cluster runs regenerate from the stored inputs and seeds to floating-point precision; see README.md.",
+  "creators": [
+    {"name": "Ibrahim, Yahaya", "affiliation": "Kwame Nkrumah University of Science and Technology (KNUST)"}
+  ],
+  "license": "MIT",
+  "keywords": ["carbon-aware scheduling", "network-aware placement", "GPU clusters", "optical data-centre networks", "discrete-event simulation", "Ghana"],
+  "version": "7.0.0",
+  "language": "eng"
+}
