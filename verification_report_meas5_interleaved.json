@@ -1,0 +1,98 @@
+[
+ {
+  "name": "hand-computed single job (energy, carbon, runtime)",
+  "status": "PASS",
+  "detail": "sim E=363.376000 kWh vs hand 363.376000; finish=3600.000s (expect 3600)",
+  "seconds": 0.0
+ },
+ {
+  "name": "hand-computed carbon with hourly-varying CI (job spans three CI hours)",
+  "status": "PASS",
+  "detail": "sim 40648.4000 g vs hand 40648.4000 g",
+  "seconds": 0.0
+ },
+ {
+  "name": "carbon integration exact with a 2-hour scheduler tick (CI changes hourly)",
+  "status": "PASS",
+  "detail": "sim 40648.4000 g vs hand 40648.4000 g",
+  "seconds": 0.0
+ },
+ {
+  "name": "congestion degenerate cases (runtime = n*(it + comm*(s-1)), incl. fully hidden communication)",
+  "status": "PASS",
+  "detail": "40.0: got 1000.000s want 1000.000s; 10.0: got 1500.000s want 1500.000s; 2 jobs, ratio 1: got 1000.000s want 1000.000s; 2 jobs, ratio 2: got 1500.000s want 1500.000s; hidden comm, s=2: got 1400.000s want 1400.000s",
+  "seconds": 0.0
+ },
+ {
+  "name": "Little's law L = lambda*W (time average vs customer average)",
+  "status": "PASS",
+  "detail": "L=5.666643, lambda*W=5.666643",
+  "seconds": 0.9
+ },
+ {
+  "name": "energy/carbon conservation (trace integral, component sum, contiguous cover)",
+  "status": "PASS",
+  "detail": "energy True, components True, coverage True, carbon True",
+  "seconds": 0.1
+ },
+ {
+  "name": "invariants every event (GPU conservation, no job in two states) for all policies",
+  "status": "PASS",
+  "detail": "ok",
+  "seconds": 11.5
+ },
+ {
+  "name": "power cap is never exceeded (admission control)",
+  "status": "PASS",
+  "detail": "P0: peak 76.0 kW <= cap 79.1 kW, blocked 10610 | P2: peak 76.0 kW <= cap 79.1 kW, blocked 9060 | P3: peak 75.8 kW <= cap 79.1 kW, blocked 10610 | P4: peak 75.8 kW <= cap 79.1 kW, blocked 9793",
+  "seconds": 9.8
+ },
+ {
+  "name": "common random numbers: identical job stream across policies, distinct across replications, repeatable",
+  "status": "PASS",
+  "detail": "hashes 7e543a2bab445e03 (policies), fb31e95b00c42db2 (other rep)",
+  "seconds": 1.8
+ },
+ {
+  "name": "trace-driven workload (SYNTHETIC test trace): CRN across policies, window per replication, all jobs finish",
+  "status": "PASS",
+  "detail": "same stream True, all complete True, rep1 differs True",
+  "seconds": 2.5
+ },
+ {
+  "name": "RNG streams: separated by stream and replication, reproducible (SeedSequence)",
+  "status": "PASS",
+  "detail": "ok",
+  "seconds": 0.0
+ },
+ {
+  "name": "generator distributional checks (KS, long-run rates, burstiness, CI variability)",
+  "status": "PASS",
+  "detail": "poisson gaps KS p=0.224 | poisson rate 19.98/h (target 20) | bursty rate 20.52/h (target 20) | diurnal rate 19.95/h (target 20) | diurnal peak/trough \u2248 8.0 (theory 9) | hourly index of dispersion bursty 24.7 vs poisson 0.99 | CI daily-range/mean low 0.08 vs high 1.04",
+  "seconds": 0.8
+ },
+ {
+  "name": "calibrate/validate split recovers known parameters on SYNTHETIC data (self-test only)",
+  "status": "PASS",
+  "detail": "fit P_idle=90 W, P_max=651 W (truth 90, 650); worst held-out MAPE 1.67%",
+  "seconds": 0.0
+ },
+ {
+  "name": "jobs over k>2 pods: measured rows first, then the k_rule extension (hier / flat-ring), compact floor",
+  "status": "PASS",
+  "detail": "hier k=3: GB 1176.0 (want 1176.0); hier k=4: GB 1323.0 (want 1323.0); ring_interleaved k=3: GB 588.0 (want 588.0); ring_interleaved k=4: GB 441.0 (want 441.0); ring_aligned k=4: GB 882.0 (want 882.0); floor 0.68s; measured k=3 used 500 GB, k=4 from it 375 GB",
+  "seconds": 0.0
+ },
+ {
+  "name": "M/M/c mean sojourn vs Erlang-C (replications, warm-up deleted)",
+  "status": "PASS",
+  "detail": "rho=0.5: sim W=607.4s \u00b15.7 (99% CI) vs Erlang-C 608.9s | rho=0.8: sim W=770.1s \u00b133.0 (99% CI) vs Erlang-C 771.6s",
+  "seconds": 29.5
+ },
+ {
+  "name": "scheduler tick halved (3600s -> 1800s): carbon unchanged within tolerance",
+  "status": "PASS",
+  "detail": "relative change P2 0.105%, P4 0.124% (tolerance 2%)",
+  "seconds": 11.2
+ }
+]

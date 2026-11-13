@@ -1,0 +1,269 @@
+{
+ "cluster": {
+  "n_pods": 4,
+  "gpus_per_pod": 32,
+  "gpus_per_server": 8,
+  "fabric": "ocs",
+  "uplink_GBps": 50.0,
+  "intra_GBps": 300.0,
+  "reconf_delay_s": 0.05,
+  "ports_per_pod": 8,
+  "uplink_scale": 1.0,
+  "sleep_idle_ports": true,
+  "k_rule": "ring_aligned",
+  "comm_scale_iter": true,
+  "congestion_pts": [
+   [
+    0.0,
+    1.0
+   ],
+   [
+    1.0,
+    1.0
+   ],
+   [
+    8.0,
+    8.0
+   ]
+  ],
+  "power_cap_W": null,
+  "tick_s": 3600.0,
+  "horizon_h": 168.0,
+  "window_h": 264.0
+ },
+ "power": {
+  "P_gpu_idle": 132.0,
+  "P_gpu_max": 874.0,
+  "P_server": 800.0,
+  "P_port": 10.0,
+  "P_net_static_pod": 400.0,
+  "P_core_static": 400.0,
+  "PUE": 1.3
+ },
+ "fabrics": {
+  "ocs": {
+   "uplink_GBps": 50.0,
+   "reconf_delay_s": 0.05,
+   "P_port": 8.0,
+   "P_core_static": 300.0
+  },
+  "electrical": {
+   "uplink_GBps": 50.0,
+   "reconf_delay_s": 0.0,
+   "P_port": 15.0,
+   "P_core_static": 900.0
+  }
+ },
+ "job_types": {
+  "llm_large": {
+   "weight": 0.15,
+   "gpus": [
+    32,
+    64
+   ],
+   "gprob": [
+    0.6,
+    0.4
+   ],
+   "G_GB": 14.0,
+   "t_comp": 2.0,
+   "overlap": 0.5,
+   "med_h": 2.5,
+   "sigma": 0.8
+  },
+  "llm_mid": {
+   "weight": 0.35,
+   "gpus": [
+    8,
+    16,
+    32
+   ],
+   "gprob": [
+    0.3,
+    0.4,
+    0.3
+   ],
+   "G_GB": 4.0,
+   "t_comp": 1.0,
+   "overlap": 0.5,
+   "med_h": 1.5,
+   "sigma": 0.9
+  },
+  "vision": {
+   "weight": 0.5,
+   "gpus": [
+    8,
+    16
+   ],
+   "gprob": [
+    0.6,
+    0.4
+   ],
+   "G_GB": 0.4,
+   "t_comp": 0.5,
+   "overlap": 0.7,
+   "med_h": 1.0,
+   "sigma": 0.8
+  }
+ },
+ "meta": {
+  "power_source": "GPU idle 132 W / max 874 W (published H100 node data (arXiv 2506.14551), linear shape validated on a T4); server 800 W ASSUMED; PUE 1.3 ASSUMED",
+  "code_version": "0.3.0",
+  "seed": 20261004,
+  "mode": "full",
+  "R": 10,
+  "profile_source": "astra-sim/ns-3 comm fit + ASSUMED compute",
+  "k_extension": "no measured k>2 rows: every k>2 job uses rule 'ring_aligned' (run colab_cells/astra_profile_cell_kpods.py to measure them)",
+  "ci_list": "synthetic_low_var, synthetic_high_var, ci_ghana_derived.csv"
+ },
+ "versions": {
+  "python": "3.13.16",
+  "numpy": "2.5.3",
+  "pandas": "3.0.5",
+  "scipy": "1.18.1",
+  "matplotlib": "3.11.2",
+  "dcsim": "0.3.0"
+ },
+ "profile_table": [
+  {
+   "jtype": "vision",
+   "n_gpus": 8,
+   "pclass": "compact",
+   "iter_time_s": 0.5173518752,
+   "frac_compute": 0.9664602062314124,
+   "interpod_GB": 0.0,
+   "comm_time_s": 0.0173518752,
+   "source": "astra-sim/ns-3 comm fit + ASSUMED compute"
+  },
+  {
+   "jtype": "vision",
+   "n_gpus": 8,
+   "pclass": "spread",
+   "iter_time_s": 0.5174375068,
+   "frac_compute": 0.9663002651125172,
+   "interpod_GB": 0.7000000000000001,
+   "comm_time_s": 0.0174375068,
+   "source": "astra-sim/ns-3 comm fit + ASSUMED compute"
+  },
+  {
+   "jtype": "vision",
+   "n_gpus": 16,
+   "pclass": "compact",
+   "iter_time_s": 0.518709252,
+   "frac_compute": 0.9639311388261108,
+   "interpod_GB": 0.0,
+   "comm_time_s": 0.018709252,
+   "source": "astra-sim/ns-3 comm fit + ASSUMED compute"
+  },
+  {
+   "jtype": "vision",
+   "n_gpus": 16,
+   "pclass": "spread",
+   "iter_time_s": 0.5187232334,
+   "frac_compute": 0.9639051575205576,
+   "interpod_GB": 0.75,
+   "comm_time_s": 0.0187232334,
+   "source": "astra-sim/ns-3 comm fit + ASSUMED compute"
+  },
+  {
+   "jtype": "llm_mid",
+   "n_gpus": 8,
+   "pclass": "compact",
+   "iter_time_s": 1.172518288,
+   "frac_compute": 0.8528651623044023,
+   "interpod_GB": 0.0,
+   "comm_time_s": 0.172518288,
+   "source": "astra-sim/ns-3 comm fit + ASSUMED compute"
+  },
+  {
+   "jtype": "llm_mid",
+   "n_gpus": 8,
+   "pclass": "spread",
+   "iter_time_s": 1.17309759,
+   "frac_compute": 0.8524439982866217,
+   "interpod_GB": 7.0,
+   "comm_time_s": 0.17309759,
+   "source": "astra-sim/ns-3 comm fit + ASSUMED compute"
+  },
+  {
+   "jtype": "llm_mid",
+   "n_gpus": 16,
+   "pclass": "compact",
+   "iter_time_s": 1.18494746,
+   "frac_compute": 0.8439192738553994,
+   "interpod_GB": 0.0,
+   "comm_time_s": 0.18494746,
+   "source": "astra-sim/ns-3 comm fit + ASSUMED compute"
+  },
+  {
+   "jtype": "llm_mid",
+   "n_gpus": 16,
+   "pclass": "spread",
+   "iter_time_s": 1.184410171,
+   "frac_compute": 0.8443021045282799,
+   "interpod_GB": 7.5,
+   "comm_time_s": 0.184410171,
+   "source": "astra-sim/ns-3 comm fit + ASSUMED compute"
+  },
+  {
+   "jtype": "llm_mid",
+   "n_gpus": 32,
+   "pclass": "compact",
+   "iter_time_s": 1.191358452,
+   "frac_compute": 0.8393779372792832,
+   "interpod_GB": 0.0,
+   "comm_time_s": 0.191358452,
+   "source": "astra-sim/ns-3 comm fit + ASSUMED compute"
+  },
+  {
+   "jtype": "llm_mid",
+   "n_gpus": 32,
+   "pclass": "spread",
+   "iter_time_s": 1.197040165,
+   "frac_compute": 0.8353938566464059,
+   "interpod_GB": 7.75,
+   "comm_time_s": 0.197040165,
+   "source": "astra-sim/ns-3 comm fit + ASSUMED compute"
+  },
+  {
+   "jtype": "llm_large",
+   "n_gpus": 32,
+   "pclass": "compact",
+   "iter_time_s": 2.668523678666667,
+   "frac_compute": 0.7494780788302032,
+   "interpod_GB": 0.0,
+   "comm_time_s": 0.6685236786666667,
+   "source": "astra-sim/ns-3 comm fit + ASSUMED compute"
+  },
+  {
+   "jtype": "llm_large",
+   "n_gpus": 32,
+   "pclass": "spread",
+   "iter_time_s": 2.688271311666667,
+   "frac_compute": 0.743972526627175,
+   "interpod_GB": 27.125,
+   "comm_time_s": 0.6882713116666668,
+   "source": "astra-sim/ns-3 comm fit + ASSUMED compute"
+  },
+  {
+   "jtype": "llm_large",
+   "n_gpus": 64,
+   "pclass": "compact",
+   "iter_time_s": 2.680256484,
+   "frac_compute": 0.7461972434127688,
+   "interpod_GB": 0.0,
+   "comm_time_s": 0.6802564840000002,
+   "source": "astra-sim/ns-3 comm fit + ASSUMED compute"
+  },
+  {
+   "jtype": "llm_large",
+   "n_gpus": 64,
+   "pclass": "spread",
+   "iter_time_s": 2.9501582613333337,
+   "frac_compute": 0.6779297321819249,
+   "interpod_GB": 27.5625,
+   "comm_time_s": 0.9501582613333336,
+   "source": "astra-sim/ns-3 comm fit + ASSUMED compute"
+  }
+ ]
+}

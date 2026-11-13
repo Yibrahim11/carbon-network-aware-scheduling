@@ -1,0 +1,134 @@
+=== RESULT DIGEST (copy everything between the lines) ===
+profile variant: aligned | results tag: meas6_aligned | input fingerprints: {'profile': 'b6593ffde6b0ab08', 'trace': 'absent', 'ghana_ci': 'absent', 'gpu_power': 'ef9768cce4028042', 'dcsim': 'ca495c2eedb33f93', 'ci:ci_ghana_derived.csv': '1b0bc98707fd6ec2'}
+code 0.3.0 | seed 20261004 | mode full | reps 10 | profile source: astra-sim/ns-3 comm fit + ASSUMED compute | ci scenarios: synthetic_low_var, synthetic_high_var, ci_ghana_derived.csv
+power model: GPU idle 132 W / max 874 W (published H100 node data (arXiv 2506.14551), linear shape validated on a T4); server 800 W ASSUMED; PUE 1.3 ASSUMED
+jobs over k>2 pods: no measured k>2 rows: every k>2 job uses rule 'ring_aligned' (run colab_cells/astra_profile_cell_kpods.py to measure them)
+verification: 17 checks, 17 PASS, 0 WARN, 0 FAIL
+main: 960 runs, censored (unfinished jobs) 0, mean run time 0.18s
+sens: 2100 runs, censored (unfinished jobs) 3, mean run time 0.38s
+
+MAIN FACTORIAL: paired % differences (CRN, 95% t-interval; * = interval excludes 0). Cell = arrival / util / comm_scale / CI scenario
+                                           carbon P2vsP0 % carbon P3vsP0 % carbon P4vsP0 % carbon P4vsP2 % JCT P2vsP0 % JCT P4vsP2 % viol P4vsP2 abs
+label                                                                                                                                               
+bursty / u0.5 / c1 / ci_ghana_derived.csv            -0.9*           -0.2*           -0.7*            0.2*        40.1*       -23.0*            -0.0
+bursty / u0.5 / c3 / ci_ghana_derived.csv            -0.9*           -0.2*           -0.5*            0.4*        39.5*       -24.4*             0.0
+bursty / u0.5 / c1 / highCI                         -21.2*           -0.1*          -20.4*             1.2       200.3*       -20.0*            -0.0
+bursty / u0.5 / c3 / highCI                         -21.1*           -0.2*          -19.8*             1.7       199.4*       -21.4*            -0.0
+bursty / u0.5 / c1 / lowCI                           -0.9*           -0.2*           -0.5*            0.3*        49.2*       -27.7*            -0.0
+bursty / u0.5 / c3 / lowCI                           -0.9*           -0.2*           -0.5*            0.4*        49.1*       -29.0*            -0.0
+bursty / u0.8 / c1 / ci_ghana_derived.csv            -0.4*           -0.1*           -0.4*            -0.0        19.3*       -11.8*            -0.0
+bursty / u0.8 / c3 / ci_ghana_derived.csv            -0.3*           -0.1*           -0.3*             0.0        20.2*       -14.5*            -0.0
+bursty / u0.8 / c1 / highCI                          -9.0*           -0.1*           -7.7*             1.5        91.3*       -19.6*           -0.0*
+bursty / u0.8 / c3 / highCI                          -9.2*           -0.1*           -7.5*             2.0        88.3*       -20.7*           -0.0*
+bursty / u0.8 / c1 / lowCI                           -0.4*           -0.1*           -0.3*             0.1        31.4*       -17.8*            -0.0
+bursty / u0.8 / c3 / lowCI                           -0.4*           -0.1*           -0.3*             0.1        32.2*       -20.6*            -0.0
+poisson / u0.5 / c1 / ci_ghana_derived.csv           -1.0*           -0.2*           -0.8*             0.1        51.0*       -22.4*            -0.0
+poisson / u0.5 / c3 / ci_ghana_derived.csv           -0.9*           -0.3*           -0.6*            0.3*        50.3*       -27.6*            -0.0
+poisson / u0.5 / c1 / highCI                        -20.0*           -0.2*          -20.8*            -1.0       246.9*       -17.8*            -0.0
+poisson / u0.5 / c3 / highCI                        -19.9*           -0.3*          -20.3*            -0.5       246.0*       -20.5*           -0.0*
+poisson / u0.5 / c1 / lowCI                          -0.8*           -0.2*           -0.5*            0.2*        49.4*       -26.3*            -0.0
+poisson / u0.5 / c3 / lowCI                          -0.7*           -0.3*           -0.5*            0.3*        49.3*       -28.9*           -0.0*
+poisson / u0.8 / c1 / ci_ghana_derived.csv           -0.7*           -0.1*           -0.5*            0.2*        52.9*       -24.0*            -0.0
+poisson / u0.8 / c3 / ci_ghana_derived.csv           -0.7*           -0.2*           -0.5*            0.3*        51.7*       -28.4*           -0.0*
+poisson / u0.8 / c1 / highCI                        -10.7*           -0.1*          -10.4*             0.4       224.8*       -28.5*           -0.1*
+poisson / u0.8 / c3 / highCI                        -10.7*           -0.2*          -10.2*             0.5       223.0*       -25.5*           -0.0*
+poisson / u0.8 / c1 / lowCI                          -0.6*           -0.2*           -0.5*            0.1*        60.2*       -28.5*           -0.0*
+poisson / u0.8 / c3 / lowCI                          -0.6*           -0.2*           -0.4*            0.2*        59.7*       -31.8*           -0.0*
+
+mean network runtime inflation by comm_scale (main design):
+policy         P0     P2     P3   P4
+comm_scale                          
+1.0         1.000  1.000  1.000  1.0
+3.0         1.002  1.002  1.001  1.0
+
+completion rate (share of jobs finished inside the window) by comm_scale:
+policy       P0   P2   P3   P4
+comm_scale                    
+1.0         1.0  1.0  1.0  1.0
+3.0         1.0  1.0  1.0  1.0
+
+total carbon per COMPLETED GPU-hour (g) by comm_scale (fair when policies finish different amounts of work):
+policy         P0     P2     P3     P4
+comm_scale                            
+1.0         594.6  582.8  594.2  583.4
+3.0         524.2  515.3  523.8  516.1
+
+mean TOTAL network inflation by comm_scale (placement + congestion; baseline = the job in one pod):
+policy         P0     P2     P3     P4
+comm_scale                            
+1.0         1.026  1.026  1.024  1.024
+3.0         1.051  1.050  1.046  1.046
+
+share of completed GPU-hours in jobs spread over 3 or more pods, by comm_scale:
+policy         P0     P2     P3     P4
+comm_scale                            
+1.0         0.292  0.278  0.123  0.106
+3.0         0.298  0.273  0.123  0.116
+
+SENSITIVITY (one factor at a time around the base cell; (cN) = N replications censored and dropped):
+                                                                     P2-P0 carbon_dyn_kg P3-P0 jct_mean_h P4-P2 carbon_dyn_kg P4-P2 jct_mean_h P4-P0 carbon_dyn_kg P4-P4nc carbon_dyn_kg P2-P2raw jct_mean_h
+label                                                                                                                                                                                                       
+arrival=bursty                                                                    -14.4*             -0.0                 0.8           -22.7*              -13.8*                  0.9*                -2.3
+arrival=diurnal                                                                   -10.1*              0.1                 0.1           -21.3*              -10.0*                  -0.3                -3.3
+arrival=poisson                                                                   -14.4*            -0.2*                -0.1           -23.9*              -14.6*                  -0.5               -3.7*
+cap_frac=none                                                                     -14.4*            -0.2*                -0.1           -23.9*              -14.6*                  -0.5               -3.7*
+cap_frac=0.62                                                                      -2.5*             -0.5                -0.2            -7.4*               -2.7*                  -0.1                 1.3
+cap_frac=0.7                                                                       -6.5*            -2.1*                -0.0           -14.0*               -6.5*                  -0.0                 3.0
+cap_frac=0.8                                                                      -10.9*             -0.1                 0.4           -21.0*              -10.6*                  -0.2                -3.2
+ci=csv:/home/claude/localrun/msc_sim_local/data/ci_ghana_derived.csv               -0.9*            -0.2*                0.2*           -23.0*               -0.7*                   0.0              -51.1*
+ci=synthetic_high_var                                                             -14.4*            -0.2*                -0.1           -23.9*              -14.6*                  -0.5               -3.7*
+ci=synthetic_low_var                                                               -0.7*            -0.2*                0.1*           -32.7*               -0.5*                  0.0*              -50.7*
+comm_scale=0.5                                                                    -14.5*            -0.1*                 0.3           -24.2*              -14.3*                   0.2               -3.7*
+comm_scale=1.0                                                                    -14.4*            -0.2*                -0.1           -23.9*              -14.6*                  -0.5               -3.7*
+comm_scale=1.5                                                                    -14.4*            -0.3*                -0.0           -24.5*              -14.5*                  -0.4               -3.8*
+comm_scale=2.0                                                                    -14.4*            -0.3*                -0.1           -25.9*              -14.5*                  -0.5               -3.8*
+comm_scale=3.0                                                                    -14.2*            -0.7*                 0.1           -25.7*              -14.2*                  -0.2               -3.6*
+comm_scale=4.0                                                                    -13.9*            -2.0*                -0.6           -26.4*              -14.5*                  -0.8               -3.7*
+deferrable_frac=0.3                                                                -7.0*            -0.2*                 0.3            -8.5*               -6.7*                   0.0               -4.8*
+deferrable_frac=0.7                                                               -14.4*            -0.2*                -0.1           -23.9*              -14.6*                  -0.5               -3.7*
+deferrable_frac=1.0                                                               -18.8*            -0.2*                 0.1           -32.4*              -18.7*                  -0.3               -5.2*
+fabric=electrical                                                                 -14.5*            -0.2*                -0.1           -23.9*              -14.6*                  -0.3               -3.7*
+fabric=ocs                                                                        -14.4*            -0.2*                -0.1           -23.9*              -14.6*                  -0.5               -3.7*
+forecast_sigma=0.0                                                                -14.4*            -0.2*                -0.1           -23.9*              -14.6*                  -0.5               -3.7*
+forecast_sigma=0.1                                                                -14.1*            -0.2*                -0.0           -26.8*              -14.2*                  -0.4               -3.4*
+forecast_sigma=0.3                                                                -13.3*            -0.2*                 0.8           -27.0*              -12.7*                   0.6                -1.6
+slack=1-4                                                                          -8.7*            -0.2*                -0.4            -3.2*               -9.0*                   0.1               -8.4*
+slack=2-12                                                                        -14.4*            -0.2*                -0.1           -23.9*              -14.6*                  -0.5               -3.7*
+slack=4-24                                                                   -18.3* (c1)            -0.2*            1.3 (c1)      -43.8* (c1)              -16.9*              0.4 (c1)          -4.2* (c1)
+util=0.4                                                                          -25.6*            -0.1*                -0.1           -14.8*              -25.7*                  -0.2               -7.4*
+util=0.6                                                                          -17.8*            -0.2*                -0.4           -21.5*              -18.2*                  -1.0               -4.7*
+util=0.7                                                                          -14.4*            -0.2*                -0.1           -23.9*              -14.6*                  -0.5               -3.7*
+util=0.8                                                                          -10.7*            -0.3*                 0.4           -28.5*              -10.4*                   0.4                -2.3
+util=0.9                                                                           -9.0*             -0.5                 0.5           -24.6*               -8.6*                   0.3                -0.0
+w_delay=0.0                                                                       -14.4*            -0.2*                -0.4           -21.1*              -14.8*                  -0.5               -3.7*
+w_delay=0.02                                                                      -14.4*            -0.2*                -0.1           -23.9*              -14.6*                  -0.5               -3.7*
+w_delay=0.1                                                                       -14.4*            -0.2*                3.2*           -45.4*              -11.8*                  -1.0               -3.7*
+
+ONSET: mean network inflation vs comm_scale (sens design; congestion only, baseline = the job's own placement):
+policy         P0     P2  P2raw     P3   P4   P4nc
+comm_scale                                        
+0.5         1.000  1.000  1.000  1.000  1.0  1.000
+1.0         1.000  1.000  1.000  1.000  1.0  1.000
+1.5         1.000  1.000  1.000  1.000  1.0  1.000
+2.0         1.000  1.000  1.000  1.000  1.0  1.000
+3.0         1.002  1.001  1.001  1.000  1.0  1.000
+4.0         1.008  1.006  1.006  1.001  1.0  1.001
+
+ONSET: mean TOTAL network inflation vs comm_scale (placement + congestion, baseline = the job in one pod):
+policy         P0     P2  P2raw     P3     P4   P4nc
+comm_scale                                          
+0.5         1.016  1.016  1.015  1.015  1.015  1.015
+1.0         1.027  1.026  1.026  1.025  1.025  1.025
+1.5         1.035  1.035  1.034  1.033  1.033  1.033
+2.0         1.041  1.041  1.041  1.039  1.039  1.038
+3.0         1.052  1.051  1.051  1.047  1.047  1.047
+4.0         1.065  1.062  1.063  1.053  1.053  1.054
+
+BEST-KNOWN BENCHMARK on a 5-job instance (local search + heuristics; not a proof of optimality):
+                   J  carbon_dyn_kg  violations  unfinished  gap_vs_best_known_%
+P0          25826.27          25.33         0.0         0.0                32.07
+P2          19712.96          16.39         0.0         0.0                 0.81
+P3          25826.27          25.33         0.0         0.0                32.07
+P4          19564.06          16.09         0.0         0.0                 0.05
+BEST_KNOWN  19554.37          16.02         0.0         0.0                 0.00
+=== END DIGEST ===

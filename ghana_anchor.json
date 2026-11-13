@@ -1,0 +1,20 @@
+{
+ "2025": {
+  "co2_Mt": 10.707556571460001,
+  "thermal_g_per_kWh": 563.6742772931144,
+  "average_g_per_kWh": 383.1653809790661,
+  "official_grid_EF_all_other": 350.0,
+  "year": 2025,
+  "thermal_efficiency": 0.3700286566702375,
+  "mean_load_MW": 3190.068493150685
+ },
+ "2024": {
+  "co2_Mt": 8.575628716764,
+  "thermal_g_per_kWh": 553.0522840683606,
+  "average_g_per_kWh": 335.2474087867083,
+  "official_grid_EF_all_other": 350.0,
+  "year": 2024,
+  "thermal_efficiency": 0.3670095629328654,
+  "mean_load_MW": 2920.0913242009133
+ }
+}
