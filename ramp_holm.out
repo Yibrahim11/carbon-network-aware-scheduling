@@ -1,0 +1,26 @@
+ramp rate (kW per 15 min), mean over 10 reps:
+                            ramp_max_kW                   ramp_p99_kW                   peak_kW                     
+policy                               P0    P2    P3    P4          P0    P2    P3    P4      P0     P2     P3     P4
+variant     util comm_scale                                                                                         
+aligned     0.3  0.5               57.0  77.4  57.1  90.9        34.0  38.7  34.0  40.3   148.1  155.1  148.0  154.6
+                 1.0               49.4  70.0  49.5  80.0        29.5  34.5  29.5  35.7   136.8  147.2  136.8  146.5
+            0.5  1.0               52.9  74.5  52.8  79.3        33.4  37.4  33.7  38.1   148.0  152.4  148.0  153.1
+            0.7  1.0               49.2  66.7  49.3  83.4        31.4  36.7  31.2  38.1   152.1  155.5  152.1  154.0
+interleaved 0.3  0.5               35.0  60.1  40.3  79.5        20.0  25.8  25.5  28.8   119.6  141.5  139.6  153.1
+                 1.0               32.5  53.2  36.7  74.8        16.9  22.7  23.0  27.0   109.1  128.0  131.5  145.7
+            0.5  1.0               35.3  45.5  43.6  71.6        19.5  21.9  26.8  29.6   122.9  136.1  145.2  150.6
+            0.7  1.0               38.2  40.3  47.1  69.5        22.6  23.5  27.5  31.0   126.7  132.9  148.4  149.7
+
+PRIMARY COMPARISONS (K = 11; job streams identical across bounds: False)
+hyp       bound                comparison              metric  n   mean               ci          ci_bonf        p   p_holm  reject_holm
+ H1     aligned                  P2 vs P0       carbon_dyn_kg 10 -28.83   [-33.8, -23.9]   [-37.0, -20.6] 0.000000 0.000003         True
+ H1 interleaved                  P2 vs P0       carbon_dyn_kg 10 -17.95   [-23.0, -12.9]    [-26.3, -9.6] 0.000021 0.000076         True
+ H2     aligned                  P4 vs P2   carbon_per_gpuh_g 10  -0.02     [-0.4, +0.4]     [-0.7, +0.7] 0.914036 0.914036        False
+ H2     aligned                  P4 vs P2          jct_mean_h 10 -13.63    [-17.4, -9.8]    [-19.9, -7.4] 0.000019 0.000076         True
+ H2     aligned                  P4 vs P3   carbon_per_gpuh_g 10  -8.81    [-10.3, -7.3]    [-11.3, -6.3] 0.000000 0.000003         True
+ H2     aligned                  P4 vs P3          jct_mean_h 10 190.66 [+167.1, +214.3] [+151.5, +229.8] 0.000000 0.000000         True
+ H2 interleaved                  P4 vs P2   carbon_per_gpuh_g 10  -2.88     [-4.2, -1.5]     [-5.1, -0.6] 0.001024 0.002048         True
+ H2 interleaved                  P4 vs P2          jct_mean_h 10 -31.42   [-38.0, -24.8]   [-42.4, -20.5] 0.000002 0.000010         True
+ H2 interleaved                  P4 vs P3   carbon_per_gpuh_g 10  -7.46     [-8.7, -6.2]     [-9.6, -5.3] 0.000000 0.000003         True
+ H2 interleaved                  P4 vs P3          jct_mean_h 10 182.38 [+161.5, +203.3] [+147.7, +217.1] 0.000000 0.000000         True
+ H3        both P0 interleaved vs aligned net_inflation_total 10 180.54 [+150.3, +210.8] [+130.3, +230.7] 0.000000 0.000003         True
