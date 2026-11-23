@@ -1,0 +1,15 @@
+4460 runs in design, 0 already done, 4460 to run
+  400/4460 done, 55s elapsed
+  800/4460 done, 117s elapsed
+  1200/4460 done, 187s elapsed
+  1600/4460 done, 218s elapsed
+  2000/4460 done, 248s elapsed
+  2400/4460 done, 275s elapsed
+  2800/4460 done, 323s elapsed
+  3200/4460 done, 414s elapsed
+  3600/4460 done, 473s elapsed
+  4000/4460 done, 540s elapsed
+  4400/4460 done, 593s elapsed
+  4460/4460 done, 602s elapsed
+120 runs in design, 0 already done, 120 to run
+  120/120 done, 14s elapsed

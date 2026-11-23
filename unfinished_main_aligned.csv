@@ -1,0 +1,17 @@
+util,comm_scale,policy,n_incomplete,bound
+0.5,1.0,P0,0,aligned
+0.5,1.0,P2,0,aligned
+0.5,1.0,P3,0,aligned
+0.5,1.0,P4,0,aligned
+0.5,3.0,P0,0,aligned
+0.5,3.0,P2,0,aligned
+0.5,3.0,P3,0,aligned
+0.5,3.0,P4,0,aligned
+0.8,1.0,P0,0,aligned
+0.8,1.0,P2,0,aligned
+0.8,1.0,P3,0,aligned
+0.8,1.0,P4,0,aligned
+0.8,3.0,P0,0,aligned
+0.8,3.0,P2,0,aligned
+0.8,3.0,P3,0,aligned
+0.8,3.0,P4,0,aligned
