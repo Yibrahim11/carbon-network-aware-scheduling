@@ -1,0 +1,16 @@
+workload,frac_compute,power_w
+fp16_matmul,0.0,27.9
+fp16_matmul,0.25,48.0
+fp16_matmul,0.5,58.3
+fp16_matmul,0.75,66.4
+fp16_matmul,1.0,69.5
+fp32_matmul,0.0,30.0
+fp32_matmul,0.25,41.8
+fp32_matmul,0.5,53.6
+fp32_matmul,0.75,72.8
+fp32_matmul,1.0,69.6
+membound,0.0,29.1
+membound,0.25,47.1
+membound,0.5,55.9
+membound,0.75,62.2
+membound,1.0,69.2

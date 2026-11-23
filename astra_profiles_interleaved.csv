@@ -1,0 +1,15 @@
+jtype,n_gpus,pclass,iter_time_s,frac_compute,interpod_GB,comm_time_s,source,placement_variant
+vision,8,compact,0.5173518752,0.9664602062314124,0.0,0.0173518752,astra-sim/ns-3 comm fit + ASSUMED compute,
+vision,8,spread,0.5669790546,0.8818667919800789,2.8000000000000003,0.0669790546,astra-sim/ns-3 comm fit + ASSUMED compute,interleaved
+vision,16,compact,0.518709252,0.9639311388261108,0.0,0.018709252,astra-sim/ns-3 comm fit + ASSUMED compute,
+vision,16,spread,0.6427604844,0.7778947401639614,6.0,0.1427604844,astra-sim/ns-3 comm fit + ASSUMED compute,interleaved
+llm_mid,8,compact,1.172518288,0.8528651623044023,0.0,0.172518288,astra-sim/ns-3 comm fit + ASSUMED compute,
+llm_mid,8,spread,1.668782165,0.5992393860465305,28.0,0.6687821650000001,astra-sim/ns-3 comm fit + ASSUMED compute,interleaved
+llm_mid,16,compact,1.18494746,0.8439192738553994,0.0,0.18494746,astra-sim/ns-3 comm fit + ASSUMED compute,
+llm_mid,16,spread,2.4255268460000003,0.4122815633432902,60.0,1.4255268460000003,astra-sim/ns-3 comm fit + ASSUMED compute,interleaved
+llm_mid,32,compact,1.191358452,0.8393779372792832,0.0,0.191358452,astra-sim/ns-3 comm fit + ASSUMED compute,
+llm_mid,32,spread,3.937025880000001,0.2539988383312328,124.0,2.937025880000001,astra-sim/ns-3 comm fit + ASSUMED compute,interleaved
+llm_large,32,compact,2.668523678666667,0.7494780788302032,0.0,0.6685236786666667,astra-sim/ns-3 comm fit + ASSUMED compute,
+llm_large,32,spread,12.278324013333338,0.1628886807212572,434.0,10.278324013333338,astra-sim/ns-3 comm fit + ASSUMED compute,interleaved
+llm_large,64,compact,2.680256484,0.7461972434127688,0.0,0.6802564840000002,astra-sim/ns-3 comm fit + ASSUMED compute,
+llm_large,64,spread,22.85334288033334,0.0875145492050145,882.0,20.85334288033334,astra-sim/ns-3 comm fit + ASSUMED compute,interleaved
