@@ -185,39 +185,56 @@ for (b, fc), g in VS.groupby(["bound", "forecast"]):
     vstar[f"{b}|{fc}"]["V_star_lower_bound"] = crossing(g.V, g.P2_lo, D_C)[0]
 S["V_star"] = vstar
 
-# ---------------- main factorial: decision points for A* ----------------
+# ---------------- decision points for A* (FINAL runs only; revised after the supervisor's review, M3) ----------------
+# A cell is a combination of the parameters that change P0 or P3: bound, pod size, utilisation, communication intensity,
+# arrivals, power cap and fabric. Carbon-only factors (carbon series, forecast, slack, delay weight, deferrable share)
+# leave P0 and P3 unchanged, so cells differing only in them are counted once. Sources: main factorial, common point,
+# one-factor sweeps, and the final pod-size experiment (final/podsize_design.py). The preliminary trace pod-size runs
+# (dcsim 0.3.0, perfect forecasts) are written separately as a diagnostic and do NOT enter A*.
+CELL = ["bound", "pod", "util", "comm_scale", "arrival", "cap_frac", "fabric"]
+def _cells(df, b, pod_of_tag):
+    out = []
+    for key, q in df.groupby(["tag", "arrival", "util", "comm_scale", "cap_frac", "fabric", "ci", "forecast", "forecast_sigma",
+                              "slack_lo", "slack_hi", "w_delay", "deferrable_frac"], dropna=False):
+        p0 = q[q.policy == "P0"]; p3 = q[q.policy == "P3"]
+        if not len(p0) or not len(p3):
+            continue
+        I0 = p0[p0.n_incomplete == 0].net_inflation_total.mean(); I3 = p3[p3.n_incomplete == 0].net_inflation_total.mean()
+        g = paired(q, "P3", "P0", "jct_mean_h")
+        out.append(dict(bound=b, pod=pod_of_tag(key[0]), tag=key[0], arrival=key[1], util=key[2], comm_scale=key[3],
+                        cap_frac=key[4], fabric=key[5], A=I0 - I3, I_P0=I0, I_P3=I3, P3_jct=g["mean"], P3_n=g["n"]))
+    return out
 dp = []
 for b in B:
-    q0 = R[(R.bound == b) & (R.tag == "main")]
-    for key, q in q0.groupby(["arrival", "util", "comm_scale", "ci"]):
-        I0 = q[(q.policy == "P0") & (q.n_incomplete == 0)].net_inflation_total.mean()
-        I3 = q[(q.policy == "P3") & (q.n_incomplete == 0)].net_inflation_total.mean()
-        g = paired(q, "P3", "P0", "jct_mean_h"); c2 = paired(q, "P2", "P0", "carbon_dyn_kg")
-        inc = q.groupby("policy").n_incomplete.apply(lambda s: int((s > 0).sum())).to_dict()
-        dp.append(dict(src=f"synthetic {b}", bound=b, arrival=key[0], util=key[1], comm_scale=key[2], ci=key[3], A=I0 - I3,
-                       I_P0=I0, I_P3=I3, P3_jct=g["mean"], P3_n=g["n"], P2_dyn=c2["mean"], **{f"unfinished_{k_}": v_ for k_, v_ in inc.items()}))
-pt = pd.read_csv(os.path.join(ROOT, "results", "podtrace_full_meas6_interleaved_pod32.csv"))
-for pod in (32, 16, 8):
-    t = pd.read_csv(os.path.join(ROOT, "results", f"podtrace_full_meas6_interleaved_pod{pod}.csv"))
-    for key, q in t.groupby(["util", "comm_scale"]):
-        I0 = q[(q.policy == "P0") & (q.n_incomplete == 0)].net_inflation_total.mean()
-        I3 = q[(q.policy == "P3") & (q.n_incomplete == 0)].net_inflation_total.mean()
-        g = paired(q, "P3", "P0", "jct_mean_h")
-        dp.append(dict(src=f"trace pod{pod}", bound="interleaved", util=key[0], comm_scale=key[1], A=I0 - I3, I_P0=I0, I_P3=I3,
-                       P3_jct=g["mean"], P3_n=g["n"]))
+    q0 = R[(R.bound == b) & (R.tag.isin(["main", "primary"]) | R.tag.str.startswith("sens:"))]
+    dp += _cells(q0, b, lambda t: 32)
+    ps = pd.read_csv(os.path.join(ROOT, "final", f"results_{b}_podsize.csv"))
+    dp += _cells(ps, b, lambda t: int(t[3:]))
 DP = pd.DataFrame(dp)
-# P0 and P3 ignore carbon intensity, so the three CI scenarios of a main-factorial cell give identical P3-vs-P0 results:
-# keep one per (bound, arrival, util, comm_scale) to avoid counting the same cell three times.
-syn = DP.src.str.startswith("synthetic")
-DP = pd.concat([DP[syn & (DP.ci == "synthetic_high_var")], DP[~syn]], ignore_index=True)
+DP["cap_frac"] = DP.cap_frac.fillna(1.0)
+DP = DP.drop_duplicates(subset=CELL, keep="first").reset_index(drop=True)
 DP.to_csv(os.path.join(OUT, "decision_points.csv"), index=False)
 ok = DP.dropna(subset=["P3_jct"])
+S["A_cells"] = int(len(ok))
 S["A_spearman"] = float(stats.spearmanr(ok.A, -ok.P3_jct).correlation)
 S["I0_spearman"] = float(stats.spearmanr(ok.I_P0, -ok.P3_jct).correlation)
 s_ = ok.sort_values("A")
 below = s_[-s_.P3_jct < D_T].A.max(); above = s_[-s_.P3_jct >= D_T].A.min()
 S["A_star_bracket"] = [float(below), float(above)]
 S["A_star_misordered"] = int(((s_.A > above) & (-s_.P3_jct < D_T)).sum() + ((s_.A < below) & (-s_.P3_jct >= D_T)).sum())
+# diagnostic only: preliminary trace pod-size cells (not used for A*)
+dg = []
+for pod in (32, 16, 8):
+    t = pd.read_csv(os.path.join(ROOT, "results", f"podtrace_full_meas6_interleaved_pod{pod}.csv"))
+    for key, q in t.groupby(["util", "comm_scale"]):
+        I0 = q[(q.policy == "P0") & (q.n_incomplete == 0)].net_inflation_total.mean()
+        I3 = q[(q.policy == "P3") & (q.n_incomplete == 0)].net_inflation_total.mean()
+        g = paired(q, "P3", "P0", "jct_mean_h")
+        dg.append(dict(src=f"trace pod{pod} (preliminary)", bound="interleaved", util=key[0], comm_scale=key[1], A=I0 - I3,
+                       I_P0=I0, I_P3=I3, P3_jct=g["mean"], P3_n=g["n"]))
+DG = pd.DataFrame(dg)
+DG.to_csv(os.path.join(OUT, "decision_points_trace_diagnostic.csv"), index=False)
+S["A_trace_diagnostic_misordered"] = int(((DG.A > above) & (-DG.P3_jct < D_T)).sum() + ((DG.A < below) & (-DG.P3_jct >= D_T)).sum())
 
 # ---------------- main factorial summaries ----------------
 mf = []

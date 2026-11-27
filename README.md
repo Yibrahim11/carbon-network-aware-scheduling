@@ -91,6 +91,20 @@ The archived version and its DOI are on Zenodo; the DOI is given in Section 3.13
     python final/final_analysis.py              # final/out/*.csv, summary.json (every number in Chapter IV)
     python final/figs_final.py                  # Figures 3.2, 4.1-4.4, 4.6-4.8 (final/figs)
 `code_v0.4.0` with default options reproduces `code_v0.3.0` exactly (relative difference 0). Headline forecast:
-day-ahead persistence. All carbon-intensity inputs are synthetic or modelled (no measured hourly series). The pod-size
-experiment (Figure 4.5) is from the preliminary runs (`results/podtrace_*_meas6_*`), because the Alibaba trace host is not
-reachable from the environment used for the final runs.
+day-ahead persistence. All carbon-intensity inputs are synthetic or modelled (no measured hourly series). The trace
+version of the pod-size experiment is from the preliminary runs (`results/podtrace_*_meas6_*`), because the Alibaba trace
+host is not reachable from the environment used for the final runs; since v8.1.0 it is a diagnostic only (see below).
+
+## v8.1.0 — revision after the supervisor's review (27 Nov 2026)
+    python final/podsize_design.py aligned      # final pod-size experiment, synthetic mix, pods 32/16/8: 480 runs, <1 min
+    python final/podsize_design.py interleaved
+    python final/final_analysis.py              # decision points and A* now from FINAL runs only
+    python final/figs_final.py                  # Figures 3.2 and 4.1-4.8 (4.5 and 4.6 redrawn)
+- Review comment M3: the decision-rule boundary A* was estimated partly from the preliminary trace pod-size runs (dcsim
+  0.3.0, perfect forecasts). It is now estimated from the 66 distinct cells of the final runs (main factorial, common point,
+  one-factor sweeps and the new final pod-size experiment): A* between 0.044 and 0.074, no cell misordered; rank correlation
+  0.93 for A against 0.76 for total inflation. The 12 preliminary trace cells are written to
+  `final/out/decision_points_trace_diagnostic.csv`, plotted as hollow markers in Figure 4.6, and all lie on the correct side.
+- Nothing else in `final/out/` changed (byte-identical to v8.0.0 except `decision_points.csv` and `summary.json`).
+- `analysis/thesis_2026-11/figs_thesis.py` no longer draws Figures 4.5 and 4.6 (now in `final/figs_final.py`); the label of
+  the preliminary Ghana series in Figure 3.5 reads "Ghana-derived (preliminary)", as in Table 3.5.

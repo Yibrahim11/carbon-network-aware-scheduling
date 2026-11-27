@@ -263,12 +263,14 @@
    "V_star_lower_bound": 0.20224596548705953
   }
  },
- "A_spearman": 0.9901207464324915,
- "I0_spearman": 0.6840236621512352,
+ "A_cells": 66,
+ "A_spearman": 0.930780252071179,
+ "I0_spearman": 0.7555353934101559,
  "A_star_bracket": [
-  0.057897664277390515,
-  0.09052677883683913
+  0.04352817227973671,
+  0.07360379373156989
  ],
  "A_star_misordered": 0,
+ "A_trace_diagnostic_misordered": 0,
  "energy_max_abs_pct_main_cell": 0.23023570310832242
 }

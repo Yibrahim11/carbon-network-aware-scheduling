@@ -1,9 +1,9 @@
 """Final thesis figures from the final experiments (dcsim 0.4.0, persistence forecast headline).
 
     python final/final_analysis.py      # first
-    python final/figs_final.py [OUTDIR]  # writes fig3_2, fig4_1-4_4, fig4_6, fig4_7, fig4_8 (PDF and PNG)
+    python final/figs_final.py [OUTDIR]  # writes fig3_2, fig4_1-4_8 (PDF and PNG)
 
-Figures 3.3, 3.4, 3.5 and 4.5 come from analysis/thesis_2026-11/figs_thesis.py (unchanged inputs).
+Figures 3.3, 3.4 and 3.5 come from analysis/thesis_2026-11/figs_thesis.py (unchanged inputs).
 """
 import os, sys
 exec(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "_style.py")).read())
@@ -101,21 +101,65 @@ for ax, v, title in ((axes[0], "aligned", "(a) Aligned placement (best case)"), 
 axes[0].set_ylabel("total network inflation (×)"); axes[1].legend(frameon=False, loc="upper left", fontsize=7)
 fig.tight_layout(); save(fig, "fig4_4_inflation_onset")
 
-# ---------- Figure 4.6: decision boundary for the network component ----------
+# ---------- Figure 4.5: pod-size experiment, P3 against P0 completion time ----------
+# (a) final pipeline (dcsim 0.4.0, persistence, synthetic mix, final/podsize_design.py); (b) preliminary trace runs.
+fig, axes = plt.subplots(1, 2, figsize=(6.4, 2.9), sharey=False)
+pods = [32, 16, 8]; cols = ["#86b6ef", "#3987e5", "#256abf", "#104281"]
+ax = axes[0]
+k = 0
+for b in ("aligned", "interleaved"):
+    PS = pd.read_csv(os.path.join(HERE, f"results_{b}_podsize.csv"))
+    cells = sorted(PS.groupby(["util", "comm_scale"]).groups)
+    best = cells[-1]                                   # highest load and communication of the bound's main factorial
+    vals, errs = [], []
+    for pod in pods:
+        q = PS[(PS.tag == f"pod{pod}") & (PS.util == best[0]) & (PS.comm_scale == best[1])]
+        m, h_ = paired(q, "P3", "P0", "jct_mean_h")
+        vals.append(-m); errs.append(h_)
+    xs = np.arange(3) + (k - 0.5) * 0.36
+    ax.bar(xs, vals, 0.33, color=("#2a78d6" if b == "aligned" else "#eb6834"), edgecolor="white", lw=0.5,
+           label=f"{b}, {int(best[0] * 100)}% load, {best[1]:g}× comm.")
+    ax.errorbar(xs, vals, yerr=errs, color="#0b0b0b", lw=0.8, capsize=2, ls="none"); k += 1
+ax.axhline(5, color="#d03b3b", lw=0.9, ls="--")
+ax.set_xticks(range(3)); ax.set_xticklabels(["32-GPU\npods", "16-GPU\npods", "8-GPU pods\n(forced splits)"])
+ax.set_title("(a) Final runs, synthetic mix", loc="left"); ax.set_ylabel("completion-time reduction,\nP3 against P0 (%)")
+tidy(ax); ax.legend(frameon=False, fontsize=6.5, loc="upper right")
+ax = axes[1]
+P = pd.read_csv(os.path.join(ROOT, "results", "podtrace_paired_full_meas6_interleaved.csv"))
+P = P[(P.a == "P3") & (P.b == "P0") & (P.metric == "jct_mean_h")]
+for i, (u, cs) in enumerate(((0.2, 0.5), (0.2, 1.0), (0.3, 0.5), (0.3, 1.0))):
+    q = P[(P.util == u) & (P.comm_scale == cs)].set_index("pod_gpus").loc[pods]
+    xs = np.arange(3) + (i - 1.5) * 0.19
+    ax.bar(xs, -q["diff"], 0.17, color=cols[i], edgecolor="white", lw=0.5, label=f"{int(u * 100)}% load, {cs:g}×")
+    ax.errorbar(xs, -q["diff"], yerr=q.ci95, color="#0b0b0b", lw=0.8, capsize=2, ls="none")
+ax.axhline(5, color="#d03b3b", lw=0.9, ls="--")
+ax.set_xticks(range(3)); ax.set_xticklabels(["32-GPU\npods", "16-GPU\npods", "8-GPU pods\n(forced splits)"])
+ax.set_ylim(0, 14); ax.set_title("(b) Preliminary runs, production trace", loc="left"); tidy(ax)
+ax.legend(frameon=False, fontsize=6.5, loc="upper right", ncol=1)
+fig.tight_layout(); save(fig, "fig4_5_pod_size")
+
+# ---------- Figure 4.6: decision boundary for the network component (final runs only; trace cells diagnostic) ----------
+import json as _json
 D = pd.read_csv(os.path.join(O, "decision_points.csv"))
-fig, ax = plt.subplots(figsize=(5.8, 3.0))
-sty = {"synthetic aligned": ("#2a78d6", "s", "Synthetic mix, aligned"), "synthetic interleaved": ("#eb6834", "^", "Synthetic mix, interleaved"),
-       "trace pod32": ("#1baf7a", "o", "Trace, 32-GPU pods"), "trace pod16": ("#eda100", "D", "Trace, 16-GPU pods"),
-       "trace pod8": ("#6b6a66", "x", "Trace, 8-GPU pods (forced splits only)")}
-for src, (c, mk, lab) in sty.items():
-    g = D[D.src == src]; xg = np.where(g.A > 3e-4, g.A, 3e-4)
-    ax.scatter(xg, -g.P3_jct, color=c, marker=mk, s=28, label=lab, zorder=3, linewidths=1.2 if mk == "x" else 0.5,
+DG = pd.read_csv(os.path.join(O, "decision_points_trace_diagnostic.csv"))
+lo, hi = _json.load(open(os.path.join(O, "summary.json")))["A_star_bracket"]
+fig, ax = plt.subplots(figsize=(5.8, 3.2))
+sty = [(("aligned", 32), "#2a78d6", "s", "Final, aligned, 32-GPU pods"), (("interleaved", 32), "#eb6834", "^", "Final, interleaved, 32-GPU pods"),
+       (("aligned", 16), "#7fb2ea", "s", "Final, aligned, 16-GPU pods"), (("interleaved", 16), "#f3a77f", "^", "Final, interleaved, 16-GPU pods"),
+       (("aligned", 8), "#6b6a66", "x", "Final, 8-GPU pods, both bounds (forced splits only)")]
+for (bd, pod), c, mk, lab in sty:
+    g = D[(D.pod == pod) & ((D.bound == bd) if pod != 8 else True)]
+    xg = np.where(g.A > 3e-4, g.A, 3e-4)
+    ax.scatter(xg, -g.P3_jct, color=c, marker=mk, s=26, label=lab, zorder=3, linewidths=1.2 if mk == "x" else 0.5,
                edgecolors="white" if mk != "x" else None)
-ax.set_xscale("log"); ax.set_xlim(2e-4, 5)
-ax.axhline(5, color="#d03b3b", lw=0.9, ls="--"); ax.axvspan(0.058, 0.091, color="#e6e5e1", zorder=0)
-ax.text(0.073, 48, r"$A^{*}$", fontsize=9, ha="center"); ax.text(2.4e-4, 6.5, r"$\delta_T = 5\%$", fontsize=8)
+xg = np.where(DG.A > 3e-4, DG.A, 3e-4)
+ax.scatter(xg, -DG.P3_jct, facecolors="none", edgecolors="#1baf7a", marker="o", s=30, linewidths=1.0, zorder=4,
+           label="Preliminary trace runs (diagnostic, not used for $A^{*}$)")
+ax.set_xscale("log"); ax.set_xlim(2e-4, 8)
+ax.axhline(5, color="#d03b3b", lw=0.9, ls="--"); ax.axvspan(lo, hi, color="#e6e5e1", zorder=0)
+ax.text((lo * hi) ** 0.5, 80, r"$A^{*}$", fontsize=9, ha="center"); ax.text(2.4e-4, 7, r"$\delta_T = 5\%$", fontsize=8)
 ax.set_xlabel("avoidable network inflation $A = I_{P0} - I_{P3}$ (log scale; $A \\leq 3\\times10^{-4}$ at left edge)")
-ax.set_ylabel("completion-time reduction,\nP3 against P0 (%)"); tidy(ax, "both"); ax.legend(frameon=False, fontsize=7, loc="upper left")
+ax.set_ylabel("completion-time reduction,\nP3 against P0 (%)"); tidy(ax, "both"); ax.legend(frameon=False, fontsize=6.5, loc="upper left")
 save(fig, "fig4_6_decision_boundary")
 
 # ---------- Figure 4.7: carbon boundary from the variability sweep ----------

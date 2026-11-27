@@ -138,7 +138,7 @@ ax.axhline(2, color="#d03b3b", lw=0.9, ls="--"); ax.text(1.19, 3.0, r"$\delta_C 
 hv = g[g.ci == "high variability"].iloc[0]
 ax.annotate("high variability", (hv.V, hv.oracle), xytext=(-70, 8), textcoords="offset points", fontsize=7, color=INK2)
 lo = g[g.ci != "high variability"]
-ax.annotate("low variability and\npreliminary Ghana series", (lo.V.mean(), lo.oracle.mean()), xytext=(30, 40), textcoords="offset points",
+ax.annotate("low variability and\nGhana-derived (preliminary)", (lo.V.mean(), lo.oracle.mean()), xytext=(30, 40), textcoords="offset points",
             fontsize=7, color=INK2, arrowprops=dict(arrowstyle="-", color=INK2, lw=0.6))
 ax.set_xlim(0, 1.22); ax.set_ylim(0, 45)
 ax.set_xlabel("grid variability $V$ (mean daily range / mean)"); ax.set_ylabel("dynamic-carbon saving (%)")
@@ -222,36 +222,10 @@ for ax, d, title in ((axes[0], al, "(a) Aligned placement (best case)"), (axes[1
 axes[0].set_ylabel("total network inflation (×)"); axes[1].legend(frameon=False, loc="upper left", fontsize=7)
 fig.tight_layout(); save(fig, "fig4_4_inflation_onset")
 
-# Figure 4.5: pod-size experiment, P3 against P0 completion time
-P = pd.read_csv(os.path.join(ROOT, "results", "podtrace_paired_full_meas6_interleaved.csv"))
-P = P[(P.a == "P3") & (P.b == "P0") & (P.metric == "jct_mean_h")]
-fig, ax = plt.subplots(figsize=(5.0, 2.7)); pods = [32, 16, 8]
-for i, (u, cs) in enumerate(((0.2, 0.5), (0.2, 1.0), (0.3, 0.5), (0.3, 1.0))):
-    q = P[(P.util == u) & (P.comm_scale == cs)].set_index("pod_gpus").loc[pods]
-    xs = np.arange(3) + (i - 1.5) * 0.19
-    c = ["#86b6ef", "#3987e5", "#256abf", "#104281"][i]
-    ax.bar(xs, -q["diff"], 0.17, color=c, edgecolor="white", lw=0.5, label=f"{int(u * 100)}% load, {cs:g}× communication")
-    ax.errorbar(xs, -q["diff"], yerr=q.ci95, color="#0b0b0b", lw=0.8, capsize=2, ls="none")
-ax.axhline(5, color="#d03b3b", lw=0.9, ls="--"); ax.text(2.45, 5.4, r"$\delta_T$", fontsize=8, ha="right")
-ax.set_xticks(range(3)); ax.set_xticklabels(["32-GPU pods\n(all splits avoidable)", "16-GPU pods", "8-GPU pods\n(all splits forced)"])
-ax.text(2, 0.4, "0 in every cell:\nno split is avoidable", ha="center", fontsize=7, color=INK2)
-ax.set_ylim(0, 14)
-ax.set_ylabel("completion-time reduction,\nP3 against P0 (%)"); tidy(ax); ax.legend(frameon=False, fontsize=7, loc="lower center", ncol=2, bbox_to_anchor=(0.5, 1.0))
-save(fig, "fig4_5_pod_size")
+# Figure 4.5 (pod-size experiment) moved to final/figs_final.py after the supervisor's review (M3): panel (a) final
+# pipeline, panel (b) preliminary trace runs.
 
-# Figure 4.6: decision boundary for the network component
-D = pd.read_csv(os.path.join(ROOT, "analysis", "review_2026-11", "decision_points.csv"))
-fig, ax = plt.subplots(figsize=(5.8, 3.0))
-sty = {"synthetic aligned": ("#2a78d6", "s", "Synthetic mix, aligned"), "synthetic interleaved": ("#eb6834", "^", "Synthetic mix, interleaved"),
-       "trace pod32": ("#1baf7a", "o", "Trace, 32-GPU pods"), "trace pod16": ("#eda100", "D", "Trace, 16-GPU pods"),
-       "trace pod8": ("#6b6a66", "x", "Trace, 8-GPU pods (forced only)")}
-for src, (c, mk, lab) in sty.items():
-    g = D[D.src == src]; xg = np.where(g.A > 0, g.A, 3e-4)
-    ax.scatter(xg, -g.P3_jct, color=c, marker=mk, s=28, label=lab, zorder=3, linewidths=1.2 if mk == "x" else 0.5, edgecolors="white" if mk != "x" else None)
-ax.set_xscale("log"); ax.set_xlim(2e-4, 5)
-ax.axhline(5, color="#d03b3b", lw=0.9, ls="--"); ax.axvspan(0.06, 0.09, color="#e6e5e1", zorder=0)
-ax.text(0.075, 60, r"$A^{*}\in[0.06,\,0.09]$", fontsize=8, ha="center"); ax.text(2.4e-4, 6.0, r"$\delta_T = 5\%$", fontsize=8)
-ax.set_xlabel("avoidable network inflation $A = I_{P0} - I_{P3}$ (log scale; $A = 0$ plotted at left edge)")
-ax.set_ylabel("completion-time reduction,\nP3 against P0 (%)"); tidy(ax, "both"); ax.legend(frameon=False, fontsize=7, loc="upper left")
-save(fig, "fig4_6_decision_boundary")
+
+# Figure 4.6 (decision boundary) is drawn by final/figs_final.py from final runs only (supervisor's review, M3).
+
 print("T4 leave-one-out errors (%):", [round(v, 1) for v in loo])

@@ -5,7 +5,7 @@ authors:
   - family-names: Ibrahim
     given-names: Yahaya
     affiliation: "Department of Telecommunication Engineering, Kwame Nkrumah University of Science and Technology (KNUST), Kumasi, Ghana"
-version: "8.0.0"
-date-released: "2026-11-22"
+version: "8.1.0"
+date-released: "2026-11-27"
 license: MIT
 keywords: [carbon-aware scheduling, network-aware placement, GPU clusters, optical data-centre networks, discrete-event simulation]
